@@ -1,4 +1,4 @@
-import tiktoken
+
 import streamlit as st
 
 st.set_page_config(
@@ -7,4 +7,15 @@ st.set_page_config(
 )
 st.title("FullstackGPT Home")
 
-print(tiktoken)
+st.markdown(
+    """
+Welcome to my FullstackGPT Portfolio!
+
+Here are the apps I made:
+- [ ] [DocumentGPT](/DocumentGPT)
+- [ ] [PrivateGPT](/PrivateGPT)
+- [ ] [SiteGPT](/SiteGPT)
+- [ ] [MeetingGPT](/MeetingGPT)
+- [ ] [InvestorGPT](/InvestorGPT)
+    """
+)
