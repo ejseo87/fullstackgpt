@@ -25,6 +25,6 @@ for message in st.session_state["messages"]:
 
 message = st.chat_input("Send a message to the AI")
 if message:
-    send_message(message, "human", save=True)
+    send_message(message, "human")
     time.sleep(2)
-    send_message("You said: " + message, "ai", save=True)
+    send_message("You said: " + message, "ai")
