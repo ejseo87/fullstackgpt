@@ -2,3 +2,7 @@
 files/
 .cache/
 chroma_db/
+
+# macOS metadata files
+.DS_Store
+._*
