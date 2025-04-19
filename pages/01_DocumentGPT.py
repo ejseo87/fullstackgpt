@@ -5,11 +5,16 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.document_loaders import UnstructuredFileLoader
 from langchain.embeddings import OpenAIEmbeddings, CacheBackedEmbeddings
 from langchain.vectorstores import FAISS
+from langchain.prompts import ChatPromptTemplate
+from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
+from langchain.chat_models import ChatOpenAI
 
 st.set_page_config(
     page_title="DocumentGPT",
     page_icon=":memo:",
 )
+
+llm = ChatOpenAI(temperature=0.1)
 
 
 @st.cache_resource(show_spinner="Embedding file...")
@@ -52,6 +57,23 @@ def paint_history():
         send_message(message["message"], message["role"], save=False)
 
 
+def format_docs(docs):
+    return "\n\n".join(document.page_content for document in docs)
+
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system",
+     """
+     Answer the question using ONLY the following context.
+     If you don't know the answer, say "I don't know".
+     Don't make anything up.
+     ---
+     Context: {context}
+     """,
+     ),
+    ("human", "{question}"),
+])
+
 st.title("DocumentGPT")
 
 st.markdown("""
@@ -72,12 +94,16 @@ with st.sidebar:
 
 if file:
     retriever = embed_file(file)
-
     send_message("I'm ready! Ask away!", "ai", save=False)
     paint_history()
     message = st.chat_input("Ask anything about the document")
     if message:
         send_message(message, "human")
-        send_message("lalalal", "ai")
+        chain = {
+            "context": retriever | RunnableLambda(format_docs),
+            "question": RunnablePassthrough(),
+        } | prompt | llm
+        response = chain.invoke(message)
+        send_message(response.content, "ai")
 else:
     st.session_state["messages"] = []
