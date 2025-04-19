@@ -9,13 +9,13 @@ st.title("FullstackGPT Home")
 
 st.markdown(
     """
-Welcome to my FullstackGPT Portfolio!
+    Welcome to my FullstackGPT Portfolio!
 
-Here are the apps I made:
-- [ ] [DocumentGPT](/DocumentGPT)
-- [ ] [PrivateGPT](/PrivateGPT)
-- [ ] [SiteGPT](/SiteGPT)
-- [ ] [MeetingGPT](/MeetingGPT)
-- [ ] [InvestorGPT](/InvestorGPT)
+    Here are the apps I made:
+    - [ ] [DocumentGPT](/DocumentGPT)
+    - [ ] [PrivateGPT](/PrivateGPT)
+    - [ ] [SiteGPT](/SiteGPT)
+    - [ ] [MeetingGPT](/MeetingGPT)
+    - [ ] [InvestorGPT](/InvestorGPT)
     """
 )
