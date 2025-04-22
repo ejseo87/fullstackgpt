@@ -1,0 +1,8 @@
+{
+  "_type": "prompt",
+  "name": "movie_prompt",
+  "description": "This is a prompt for a movie",
+  "prompt": "You are a film expert, you give short answers",
+  "template": "Who is the director of {movie}?",
+  "input_variables": ["movie"]
+}
