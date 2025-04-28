@@ -1,4 +1,56 @@
 import streamlit as st
+import os
+from langchain.retrievers import WikipediaRetriever
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.document_loaders import UnstructuredFileLoader
+
+st.set_page_config(
+    page_title="QuizGPT",
+    page_icon="❓",
+)
 st.title("QuizGPT")
 
-st.write("QuizGPT is a tool that allows you to create quizzes from a document")
+
+@st.cache_resource(show_spinner="Splitting file...")
+def split_file(file):
+    file_content = file.read()
+    file_path = f"./.cache/quiz_files/{file.name}"
+    # Save the file
+    with open(file_path, "wb") as f:
+        f.write(file_content)
+    st.success(f"File [{file.name}] uploaded successfully!")
+    splitter = CharacterTextSplitter.from_tiktoken_encoder(
+        separator="\n",
+        chunk_size=600,
+        chunk_overlap=100,
+    )
+    loader = UnstructuredFileLoader(file_path)
+    docs = loader.load_and_split(text_splitter=splitter)
+    return docs
+
+
+# Create necessary directories
+os.makedirs("./.cache/quiz_files", exist_ok=True)
+
+with st.sidebar:
+    choice = st.selectbox(
+        "Choose what you want to use.",
+        (
+            "File",
+            "Wikepedia Article",
+        )
+    )
+    if choice == "File":
+        file = st.file_uploader(
+            "Upload a .docx, .txt, or .pdf file",
+            type=["txt", "pdf", "docx"]
+        )
+        if file:
+            docs = split_file(file)
+            st.write(docs)
+    else:
+        topic = st.text_input("Search Wikipedia for...")
+        if topic:
+            retriever = WikipediaRetriever(top_k_results=5)
+            with st.status("Searching Wikipedia..."):
+                docs = retriever.get_relevant_documents(topic)
