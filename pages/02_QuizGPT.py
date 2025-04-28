@@ -23,8 +23,6 @@ st.set_page_config(
 )
 st.title("QuizGPT")
 
-# Initialize docs as None
-docs = None
 # 니꼬샘은 1106 사용, 쬐끔 더 비쌈
 llm = ChatOpenAI(
     model="gpt-3.5-turbo-0125",
@@ -207,7 +205,7 @@ formatting_prompt = ChatPromptTemplate.from_messages(
 formatting_chain = formatting_prompt | llm
 
 
-@st.cache_resource(show_spinner="Splitting file...")
+@st.cache_data(show_spinner="Splitting file...")
 def split_file(file):
     file_content = file.read()
     file_path = f"./.cache/quiz_files/{file.name}"
@@ -225,10 +223,24 @@ def split_file(file):
     return docs
 
 
+@st.cache_data(show_spinner="Making quiz...")
+def run_quiz_chain(_docs, topic):
+    chain = {"context": questions_chain} | formatting_chain | output_parser
+    return chain.invoke(_docs)
+
+
+@st.cache_data(show_spinner="Searching Wikipedia...")
+def wiki_search(topic):
+    retriever = WikipediaRetriever(top_k_results=5)
+    docs = retriever.get_relevant_documents(topic)
+    return docs
+
+
 # Create necessary directories
 os.makedirs("./.cache/quiz_files", exist_ok=True)
 
 with st.sidebar:
+    docs = None
     choice = st.selectbox(
         "Choose what you want to use.",
         (
@@ -246,9 +258,7 @@ with st.sidebar:
     else:
         topic = st.text_input("Search Wikipedia for...")
         if topic:
-            retriever = WikipediaRetriever(top_k_results=5)
-            with st.status("Searching Wikipedia..."):
-                docs = retriever.get_relevant_documents(topic)
+            docs = wiki_search(topic)
 
 if not docs:
     st.markdown(
@@ -264,6 +274,5 @@ if not docs:
 else:
     start = st.button("Generate Quiz")
     if start:
-        chain = {"context": questions_chain} | formatting_chain | output_parser
-        response = chain.invoke(docs)
+        response = run_quiz_chain(docs, topic if topic else file.name)
         st.write(response)
