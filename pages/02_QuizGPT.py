@@ -1,12 +1,22 @@
 import streamlit as st
 import os
+import json
 from langchain.retrievers import WikipediaRetriever
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.document_loaders import UnstructuredFileLoader
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.callbacks import StreamingStdOutCallbackHandler
+from langchain.schema import BaseOutputParser
 
+
+class JsonOutputParser(BaseOutputParser):
+    def parse(self, text):
+        text = text.replace("```", "").replace("json", "")
+        return json.loads(text)
+
+
+output_parser = JsonOutputParser()
 st.set_page_config(
     page_title="QuizGPT",
     page_icon="❓",
@@ -254,9 +264,6 @@ if not docs:
 else:
     start = st.button("Generate Quiz")
     if start:
-        with st.spinner("Generating quiz..."):
-            question_response = questions_chain.invoke(docs)
-            st.write(question_response.content)
-            formatted_response = formatting_chain.invoke(
-                {"context": question_response.content})
-            st.write(formatted_response.content)
+        chain = {"context": questions_chain} | formatting_chain | output_parser
+        response = chain.invoke(docs)
+        st.write(response)
