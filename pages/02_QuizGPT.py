@@ -273,7 +273,6 @@ if not docs:
     )
 else:
     response = run_quiz_chain(docs, topic if topic else file.name)
-    st.write(response)
     with st.form("qustions_form"):
         for quiz in response["questions"]:
             st.write(quiz["question"])

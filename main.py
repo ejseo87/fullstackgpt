@@ -14,7 +14,7 @@ st.markdown(
     Here are the apps I made:
     - [x] [DocumentGPT](/DocumentGPT)
     - == [PrivateGPT](/PrivateGPT) *) my notebook has poor spec. can't run it.
-    - [ ] [QuizGPT](/QuizGPT)
+    - [x] [QuizGPT](/QuizGPT)
     - [ ] [SiteGPT](/SiteGPT)
     - [ ] [MeetingGPT](/MeetingGPT)
     - [ ] [InvestorGPT](/InvestorGPT)
