@@ -44,14 +44,53 @@ def get_answers(inputs):
     docs = inputs["docs"]
     question = inputs["question"]
     answers_chain = answers_prompt | llm
-    answers = []
-    for doc in docs:
-        answer = answers_chain.invoke({
-            "context": doc.page_content,
-            "question": question,
-        })
-        answers.append(answer.content)
-    st.write(answers)
+    return {
+        "question": question,
+        "answers": [
+            {
+                "answer": answers_chain.invoke({
+                    "context": doc.page_content,
+                    "question": question,
+                }).content,
+                "source": doc.metadata["source"],
+                "date": doc.metadata.get("lastmod", "N/A"),
+            } for doc in docs
+        ]}
+
+
+choose_prompt = ChatPromptTemplate.from_messages(
+    [
+        (
+            "system",
+            """
+Use ONLY the following pre-existing answers to answer the user's question.
+Use the answers that have the highest score (more helpful)
+and favor the most recent ones.
+
+Return the sources of the answers as they are, do not change them.
+
+Answer:{answers}
+      """,
+        ),
+        ("human", "{question}"),
+    ]
+)
+
+
+def choose_answer(inputs):
+    question = inputs["question"]
+    answers = inputs["answers"]
+    choose_chain = choose_prompt | llm
+    condensed = "\n\n".join(
+        f"{answer['answer']}\n"
+        f"Source:{answer['source']}\n"
+        f"Date:{answer['date']}\n"
+        for answer in answers
+    )
+    return choose_chain.invoke({
+        "question": question,
+        "answers": condensed,
+    })
 
 
 def parse_page(soup: BeautifulSoup):
@@ -86,7 +125,7 @@ def load_website(url):
     )
     loader = SitemapLoader(
         url,
-        filter_urls=[r"^(.*\/develop\/concepts\/).*",],
+        filter_urls=[r"^(.*\/get-started\/).*",],
         parsing_function=parse_page,
     )
     loader.requests_per_second = 1
@@ -123,8 +162,11 @@ if url:
             st.error("Please write down a Sitemap URL")
     else:
         retriever = load_website(url)
-        chain = {
-            "docs": retriever,
-            "question": RunnablePassthrough(),
-        } | RunnableLambda(get_answers)
-        chain.invoke("What is the main topic of the website?")
+        query = st.text_input("Ask a question to the website")
+        if query:
+            chain = {
+                "docs": retriever,
+                "question": RunnablePassthrough(),
+            } | RunnableLambda(get_answers) | RunnableLambda(choose_answer)
+            result = chain.invoke(query)
+            st.write(result.content)
