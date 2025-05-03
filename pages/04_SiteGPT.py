@@ -169,4 +169,4 @@ if url:
                 "question": RunnablePassthrough(),
             } | RunnableLambda(get_answers) | RunnableLambda(choose_answer)
             result = chain.invoke(query)
-            st.write(result.content)
+            st.markdown(result.content.replace("$", "\$"))
