@@ -1,12 +1,48 @@
-from langchain.document_loaders import SitemapLoader
+from langchain_community.document_loaders import SitemapLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 import streamlit as st
+from bs4 import BeautifulSoup
+
+
+def parse_page(soup: BeautifulSoup):
+    header = soup.find("header")
+    footer = soup.find("footer")
+    nav = soup.find_all("nav")
+
+    if header:
+        header.decompose()
+    if footer:
+        footer.decompose()
+    if nav:
+        for n in nav:
+            n.decompose()
+
+    # Clean up the text content
+    text = str(soup.get_text())
+    text = text.replace("\n", " ")
+
+    # Remove navigation and forum text patterns
+    text = text.replace(r'Previous:.*?Next:.*?forum', '')
+    text = text.replace(r'Still have questions\?.*?Streamlit experts\.', '')
+
+    return text
 
 
 @st.cache_data(show_spinner="Loading website...")
 def load_website(url):
-    loader = SitemapLoader(url)
-    loader.requests_per_second = 5
-    docs = loader.load()
+    splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+        chunk_size=1000,
+        chunk_overlap=200,
+    )
+    loader = SitemapLoader(
+        url,
+        filter_urls=[
+            r"^(.*\/develop\/concepts\/).*",
+        ],
+        parsing_function=parse_page,
+    )
+    loader.requests_per_second = 1
+    docs = loader.load_and_split(text_splitter=splitter)
     return docs
 
 
@@ -38,3 +74,4 @@ if url:
             st.error("Please write down a Sitemap URL")
     else:
         docs = load_website(url)
+        st.write(docs)
