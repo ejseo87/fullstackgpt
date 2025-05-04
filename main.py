@@ -15,7 +15,7 @@ st.markdown(
     - [x] [DocumentGPT](/DocumentGPT)
     - == [PrivateGPT](/PrivateGPT) *) my notebook has poor spec. can't run it.
     - [x] [QuizGPT](/QuizGPT)
-    - [ ] [SiteGPT](/SiteGPT)
+    - [x] [SiteGPT](/SiteGPT)
     - [ ] [MeetingGPT](/MeetingGPT)
     - [ ] [InvestorGPT](/InvestorGPT)
     """
