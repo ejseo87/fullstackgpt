@@ -83,27 +83,27 @@ formatting_prompt = ChatPromptTemplate.from_messages(
             "system",
             """
     You are a powerful formatting algorithm.
-     
+
     You format exam questions into JSON format.
     Answers with (o) are the correct ones.
-     
+
     Example Input:
 
     Question: What is the color of the ocean?
     Answers: Red|Yellow|Green|Blue(o)
-         
+
     Question: What is the capital or Georgia?
     Answers: Baku|Tbilisi(o)|Manila|Beirut
-         
+
     Question: When was Avatar released?
     Answers: 2007|2001|2009(o)|1998
-         
+
     Question: Who was Julius Caesar?
     Answers: A Roman Emperor(o)|Painter|Actor|Model
-    
-     
+
+
     Example Output:
-     
+
     ```json
     {{ "questions": [
             {{

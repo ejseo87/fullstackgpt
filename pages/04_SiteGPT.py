@@ -18,14 +18,14 @@ answers_prompt = ChatPromptTemplate.from_template(
     """
   Using ONLY the following context answer the user's question.
   If you don't just say you don't know, don't make anything up.
-  
+
   Then, give a score to the answer between 0 and 5.
   If the answer answers the user question the score should be high,
   else it should be low.
   Make sure to always include the answer's score even if it's 0.
-  
+
   Context: {context}
-  
+
   Exmaple:
   Question: How far away is the moon?
   Answer: the moon is 384,400 km away from the earth.
@@ -143,9 +143,9 @@ st.set_page_config(
 st.markdown(
     """
   # SiteGPT
-  
+
   Ask questions about the content of a website.
-  
+
   Start by writing the URL of the website on the sidebar.
   """
 )
