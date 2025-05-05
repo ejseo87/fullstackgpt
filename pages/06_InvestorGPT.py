@@ -86,7 +86,7 @@ agent = initialize_agent(
     llm=llm,
     verbose=True,
     agent=AgentType.OPENAI_FUNCTIONS,
-    handle_parse_errors=True,
+    handle_parsing_errors=True,
     tools=[
         StockMarketSymbolSearchTool(),
         CompanyOverviewTool(),
