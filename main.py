@@ -3,7 +3,12 @@ from pydantic import BaseModel, Field
 
 app = FastAPI(
     title="Nicolacus Maximus Quote Giver",
-    description="Get a rear quote said by Nicolacus Maximus himself."
+    description="Get a rear quote said by Nicolacus Maximus himself.",
+    servers=[
+        {
+            "url": "https://providing-adventures-deserve-exercises.trycloudflare.com",
+        }
+    ]
 )
 
 
