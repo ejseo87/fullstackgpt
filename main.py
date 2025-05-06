@@ -22,7 +22,10 @@ class Quote(BaseModel):
     summary="Return a random quote by Nicolacus Maximus",
     description="Upon receiving a GET reqeust this endpoint will return a real quote said by Nicolacus Maximus himself.",
     response_description="A quote object that contains the quote said by Nicolacus Maximus and the date when the quote was said.",
-    response_model=Quote
+    response_model=Quote,
+    openapi_extra={
+        "x-openai-isConsequential": True,
+    }
 )
 def get_quote():
     return {"quote": "Life is short so eat it all.", "year": 1999}
