@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from pydantic import BaseModel, Field
 
 app = FastAPI(
@@ -6,7 +6,7 @@ app = FastAPI(
     description="Get a rear quote said by Nicolacus Maximus himself.",
     servers=[
         {
-            "url": "https://providing-adventures-deserve-exercises.trycloudflare.com",
+            "url": "https://laser-studio-challenges-instruction.trycloudflare.com",
         }
     ]
 )
@@ -27,5 +27,9 @@ class Quote(BaseModel):
         "x-openai-isConsequential": True,
     }
 )
-def get_quote():
-    return {"quote": "Life is short so eat it all.", "year": 1999}
+def get_quote(request: Request):
+    print(request.headers)
+    return {
+        "quote": "Life is short so eat it all.",
+        "year": 1999,
+    }
