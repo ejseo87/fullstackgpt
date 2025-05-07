@@ -1,0 +1,20 @@
+# Trump Tariff Policy Research
+
+## Overview
+During his presidency, Donald Trump implemented a series of significant tariff policies aimed at protecting American industries and addressing trade imbalances. His approach was characterized by a protectionist stance, particularly against countries like China, Canada, and Mexico.
+
+### First Trump Administration (2017-2021)
+- **Initial Tariffs**: In January 2018, Trump imposed tariffs on solar panels and washing machines (30-50%). In March 2018, he introduced tariffs on steel (25%) and aluminum (10%) from most countries, which affected approximately 4.1% of U.S. imports.
+- **Escalation with China**: The trade war with China escalated, with tariffs on Chinese imports reaching as high as 145%. In retaliation, China imposed tariffs on U.S. goods, including a minimum 125% tariff on certain imports.
+- **Impact on Trade Partners**: Trump also initiated tariffs on goods from Canada and Mexico, citing issues related to drug trafficking and illegal immigration. A 25% tariff was imposed on most goods from these countries, although some exemptions were later granted under the USMCA.
+
+### Second Trump Administration (2025)
+- **Liberation Day Tariffs**: On April 2, 2025, Trump announced a minimum 10% tariff on all U.S. imports, with higher tariffs on imports from 57 countries, ranging from 11% to 50%. This day was termed "Liberation Day" by Trump, marking a significant escalation in his tariff strategy.
+- **Economic Impact**: The tariffs were projected to increase costs for American households by nearly $1,300 in 2025. The tariffs contributed to downgraded GDP growth projections and raised concerns about a potential recession.
+- **Global Trade War**: The announcement triggered a global trade war and a stock market crash, as many countries retaliated against the U.S. tariffs.
+
+## Economic Rationale
+Trump's administration framed these tariffs as necessary to correct unfair trade practices and protect American jobs. However, many economists criticized this view, arguing that tariffs could harm the economy by increasing prices for consumers and disrupting supply chains.
+
+## Conclusion
+Trump's tariff policies were a hallmark of his economic strategy, aimed at reshaping international trade relationships. While they were intended to bolster American manufacturing and reduce trade deficits, the long-term impacts on the U.S. economy and global trade dynamics remain a subject of debate.
