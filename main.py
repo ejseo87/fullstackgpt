@@ -45,6 +45,7 @@ user_token_db = {
 @app.get(
     "/authorize",
     response_class=HTMLResponse,
+    include_in_schema=False,
 )
 def handle_authorize(client_id: str, redirect_uri: str, state: str):
     return f"""
@@ -60,7 +61,10 @@ def handle_authorize(client_id: str, redirect_uri: str, state: str):
     """
 
 
-@app.post("/token")
+@app.post(
+    "/token",
+    include_in_schema=False,
+)
 def handle_token(code=Form(...)):
     print(f"code: {code}")
     return {
