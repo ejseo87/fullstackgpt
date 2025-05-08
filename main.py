@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os
 from langchain.embeddings import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
-
+    
 load_dotenv()
 # Initialize Pinecone client
 pc = PineconeClient(api_key=os.getenv("PINECONE_API_KEY"))
