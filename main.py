@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
 app = FastAPI(
@@ -6,7 +7,7 @@ app = FastAPI(
     description="Get a rear quote said by Nicolacus Maximus himself.",
     servers=[
         {
-            "url": "https://laser-studio-challenges-instruction.trycloudflare.com",
+            "url": "https://valium-webmasters-ceiling-lbs.trycloudflare.com",
         }
     ]
 )
@@ -32,4 +33,36 @@ def get_quote(request: Request):
     return {
         "quote": "Life is short so eat it all.",
         "year": 1999,
+    }
+
+
+# fake user token db
+user_token_db = {
+    "ABCDEF": "nico"
+}
+
+
+@app.get(
+    "/authorize",
+    response_class=HTMLResponse,
+)
+def handle_authorize(client_id: str, redirect_uri: str, state: str):
+    return f"""
+    <html>
+        <head>
+            <title>Nicolacus Maximus Log In</title>
+        </head>
+        <body>
+            <h1>Log In Nicolacus Maximus</h1>
+            <a href="{redirect_uri}?code=ABCDEF&state={state}">Authorize Nicolacus Maximus GPT</a>
+        </body>
+    </html>
+    """
+
+
+@app.post("/token")
+def handle_token(code=Form(...)):
+    print(f"code: {code}")
+    return {
+        "access_token": user_token_db[code],
     }
