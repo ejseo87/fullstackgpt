@@ -1,20 +1,24 @@
-### XZ Backdoor (CVE-2024-3094)
+XZ Backdoor Research
 
-In February 2024, a malicious backdoor was introduced to the Linux build of the xz utility within the liblzma library in versions 5.6.0 and 5.6.1 by an account using the name "Jia Tan". The backdoor allows an attacker who possesses a specific Ed448 private key to execute remote code through OpenSSH on the affected Linux system. This issue has been assigned the Common Vulnerabilities and Exposures (CVE) number CVE-2024-3094 and has been given a CVSS score of 10.0, the highest possible score.
+Summary:
+In February 2024, a malicious backdoor was introduced to the Linux build of the xz utility within the liblzma library in versions 5.6.0 and 5.6.1 by an individual using the alias "Jia Tan." The backdoor allows an attacker possessing a specific Ed448 private key to execute remote code through OpenSSH on an affected Linux system. This vulnerability has been assigned the Common Vulnerabilities and Exposures number CVE-2024-3094 and has a CVSS score of 10.0, the highest possible score.
 
-While xz is commonly present in most Linux distributions, at the time of discovery, the backdoored version had not yet been widely deployed to production systems but was present in development versions of major distributions. The backdoor was discovered by software developer Andres Freund, who announced his findings on March 29, 2024.
+Technical Details:
+- Vulnerability Impact: The backdoor grants unauthorized remote code execution capabilities to an attacker in possession of a specific Ed448 private key. This poses a significant threat to affected systems.
+- Discovery: The backdoor was uncovered by software developer Andres Freund, a PostgreSQL developer employed by Microsoft. Anomalies in CPU usage during SSH sessions and errors flagged by Valgrind prompted his investigation.
+- Origins of the Exposure: The insertion of the backdoor was discovered to be part of a roughly three-year campaign by the individual using the alias Jia Tan and others. The campaign involved ascending to a significant position of influence within the XZ Utils project.
+- Compromised Versions: The exploited versions of XZ Utils contained compressed test files harboring the malicious code, which remained inactive until they were extracted and deployed. Deployment was contingent on a specific patch of the SSH server, allowing the altered OpenSSH server daemon to load the tampered liblzma library, effectively compromising the system.
 
-### Technical Details
+Response and Remediation:
+- Following the severity of the threat, the US Cybersecurity and Infrastructure Security Agency (CISA) issued a directive to roll back to prior uncontaminated versions of the software. Major Linux vendors like Red Hat, SUSE, and Debian have started implementing these rollbacks.
+- GitHub disabled, then later restored, the XZ repository mirrors to curb the spread of the compromised versions.
+- Canonical delayed the beta release of Ubuntu 24.04 LTS to perform a thorough rebuild of the packages to mitigate potential risks.
 
-- **Affected Versions**: XZ Utils versions 5.6.0 and 5.6.1.
-- **Impact**: The backdoor allows remote code execution on systems running affected versions of the xz utility.
-- **Vulnerability Type**: Supply chain attack, where malicious code was introduced into the software during the build process.
-- **Discovery**: The vulnerability was discovered by Andres Freund, a Microsoft software developer.
+Repercussions and Reflections:
+- The incident has reignited conversations about the reliance on unpaid volunteers for maintaining critical infrastructure, highlighting the potential disaster that could have ensued had the backdoor gone undetected.
+- This case serves as a stark reminder of the vulnerabilities inherent in digital infrastructures and the continuous need for vigilance in cybersecurity practices.
 
-### Background on XZ Utils
-
-XZ Utils (previously LZMA Utils) is a set of free software command-line lossless data compressors, including the programs lzma and xz, for Unix-like operating systems and, from version 5.0 onwards, Microsoft Windows. It uses the Lempel–Ziv–Markov chain algorithm (LZMA) for compression and decompression.
-
-### Conclusion
-
-The XZ backdoor represents a significant security risk for systems using the affected versions of the XZ Utils library. Users are advised to update to secure versions and monitor for any signs of exploitation.
+Sources:
+1. Dreamlab: In-Depth Analysis of the XZ Utility Backdoor in Linux 
+- CVE-2024-3094 (Source)
+- https://dreamlab.net/en/blog/post/in-depth-analysis-of-the-xz-utility-backdoor-in-linux-cve-2024-3094/

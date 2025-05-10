@@ -7,3 +7,4 @@ chroma_db/
 # macOS metadata files
 .DS_Store
 ._*
+=1.26.2
